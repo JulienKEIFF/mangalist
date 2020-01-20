@@ -2,22 +2,16 @@
   <v-app>
     <v-app-bar app color="teal" dark>
       <div class="d-flex align-center">
-        <v-icon x-large @click.stop="drawer = !drawer">mdi-menu</v-icon>
-        <!-- <v-icon>mdi-cellphone-arrow-down</v-icon> -->
+        <!-- <v-icon x-large @click.stop="drawer = !drawer">mdi-menu</v-icon> -->
         <h1>MANGALIST</h1>
       </div>
     </v-app-bar>
-
-    <v-navigation-drawer v-model="drawer" absolute temporary clipped id="menu">
-      <v-list dense>
-
-        <v-list-item v-for="item in items" :key="item.title" link>
-          <v-icon>{{ item.icon }}</v-icon>
-          <v-list-item-title>{{ item.title }}</v-list-item-title>
-        </v-list-item>
+    <!-- <v-navigation-drawer v-model="drawer" absolute temporary clipped id="menu">
+      <v-list >
+        <v-icon>mdi-home</v-icon>
+        <v-list-item-title>ACCUEIL</v-list-item-title>
       </v-list>
-    </v-navigation-drawer>
-
+    </v-navigation-drawer> -->
     <v-content>
       <list/>
     </v-content>
