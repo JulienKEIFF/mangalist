@@ -19,19 +19,19 @@
     </v-navigation-drawer>
 
     <v-content>
-      <HelloWorld/>
+      <list/>
     </v-content>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld';
+import list from './components/list';
 
 export default {
   name: 'App',
 
   components: {
-    HelloWorld,
+    list,
   },
 
   data () {
