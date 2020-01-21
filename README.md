@@ -1,4 +1,4 @@
-# mangalist-vuetify
+# mangalist
 
 ## Project setup
 ```
