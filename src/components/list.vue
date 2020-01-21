@@ -2,15 +2,19 @@
   <v-container>
     <div class="root">
       <div v-for="item in items" :key=item.key>
-        <card :title=item.name :tomeMax="item.tomeMax" :index="item.key" v-if="items" v-on:delete="allItemFunction" />
+        <card :title=item.name :tomeMax="item.tomeMax" :descr="item.descr" :index="item.key" v-if="items" v-on:delete="allItemFunction" />
       </div>
     </div>
-    <button v-on:click='allItemFunction' v-if="listOpen">Click</button>
+    <div v-if="listOpen">
+      <p>Cette application est encore en développement. <br> Si vous constatez des bug veuillez m'en faire part</p> 
+      <v-btn id="hide" color="teal" v-on:click='allItemFunction'>Je comprends</v-btn>
+    </div>
+    
 
-   <v-btn fab color="teal" bottom right absolute>
+   <v-btn v-on:click='toggleAdd' fab color="teal" bottom right class="plus">
       <v-icon>mdi-plus</v-icon>
     </v-btn>
-   <addView v-if="add" v-on:addComplete="allItemFunction" />
+   <addView v-if="add" v-on:viewToggle="toggleAdd" v-on:addComplete="allItemFunction" absolute />
   </v-container>
 </template>
 
@@ -28,7 +32,7 @@ export default {
     addView
   },
   data: () => ({
-    add: true,
+    add: false,
     items: allItem,
     listOpen: true
   }),
@@ -39,6 +43,9 @@ export default {
       this.items = allItem
       this.listOpen = false
     },
+    toggleAdd(){
+      this.add = !this.add
+    }
   },
   beforeMount: function(){
     
@@ -51,5 +58,30 @@ h1{
   color: #009688;
   text-transform: uppercase;
   margin-left: 5px;
+}
+.plus{
+  position: fixed;
+  top: 88%;
+  left: 80%;
+  color: white;
+}
+#hide{
+  position: fixed;
+  top: 50%;
+  left: 30%;
+  text-transform: uppercase;
+  font-weight: bolder;
+  width: 40%;
+  height: 50px;
+  color: white;
+  font-size: 1.1em; 
+}
+p{
+  position: fixed;
+  top: 30%;
+  left: 15%;
+  width: 70%;
+  font-size: 1.3em;
+  text-align: center;
 }
 </style>

@@ -1,11 +1,15 @@
 <template>
   <v-container>
       <v-card>
+        <v-col>
           <h1>{{title}}</h1>
           <v-btn icon right v-on:click='supress'>
             <v-icon>mdi-delete</v-icon>
           </v-btn>
-        <div>Dernier tome: {{tomeMax}}</div>
+          <div class="last-tome">Dernier tome: {{tomeMax}}</div>
+          <v-divider></v-divider>
+          <div class="description">{{descr}}</div>
+        </v-col>
       </v-card>
   </v-container>
 </template>
@@ -18,6 +22,7 @@ export default {
   props:{
     title: String,
     tomeMax: Number,
+    descr: String,
     index: null
   },
   data: () => ({
@@ -41,8 +46,8 @@ export default {
     text-transform: uppercase;
     margin-left: 5px;
     display: inline-block;
-    font-size: 1.5em;
-    width: 85% !important;
+    font-size: 1.2em;
+    width: 80% !important;
   }
 }
 @media screen and (min-width: 481px) and (max-width: 700px){
@@ -61,7 +66,7 @@ export default {
     text-transform: uppercase;
     margin-left: 5px;
     display: inline-block;
-    width: 95% !important;
+    width: 92% !important;
   }
 }
 h1{
@@ -69,6 +74,13 @@ h1{
   text-transform: uppercase;
   margin-left: 5px;
   display: inline-block;
-  width: 96%;
+  width: 94%;
+}
+.description{
+  margin-top: 5px; 
+  text-indent: 20px;
+}
+.last-tome{
+  margin-bottom: 10px; 
 }
 </style>

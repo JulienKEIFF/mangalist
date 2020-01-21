@@ -45,9 +45,8 @@ export default {
     let request = window.indexedDB.open("mangalist", 1)
     request.onsuccess = function(event){
       this.db = event.target.result
-      console.log(event)
+      
     }
-    console.log(this.db)
   }
 };
 </script>
@@ -56,12 +55,5 @@ export default {
 #menu{
   top: 25px;
 }
-.v-overlay_scrim{
-  position: absolute;
-  top: 57px !important;
-}
-.v-navigation-drawer__content{
-  position: absolute;
-  top: 56px !important;
-}
+
 </style>
