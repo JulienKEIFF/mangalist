@@ -1,17 +1,16 @@
 <template>
   <v-container>
-   <card title="Seraph of the end" listTome="Dernier tome: 16" />
-   <card title="Real Account" listTome="Dernier tome: 18" />
-   <card title="The rising of the shield hero" listTome="Dernier tome: 10" />
-   <card title="The Isolator" listTome="Dernier tome: 2" />
-   <card title="Re Zero - Arc 1" listTome="Dernier tome: 2" />
-   <card title="Re zero - arc 2" listTome="Dernier tome: 5" />
-   <card title="Re zero - arc 3" listTome="Dernier tome: 5" />
+    <div class="root">
+      <div v-for="item in items" :key=item.key>
+        <card :title=item.name :tomeMax="item.tomeMax" :index="item.key" v-if="items" v-on:delete="allItemFunction" />
+      </div>
+    </div>
+    <button v-on:click='allItemFunction'>Click</button>
 
    <v-btn fab color="teal" bottom right absolute>
       <v-icon>mdi-plus</v-icon>
     </v-btn>
-   <addView v-if="add" />
+   <addView v-if="add" v-on:addComplete="allItemFunction" />
   </v-container>
 </template>
 
@@ -20,6 +19,7 @@ import card from './card.vue'
 import addView from './addItemView.vue'
 
 import {getItem} from './../../public/openDB'
+import {allItem} from './../../public/openDB'
 
 export default {
   name: 'List',
@@ -28,13 +28,20 @@ export default {
     addView
   },
   data: () => ({
-    add: false
+    add: true,
+    items: allItem,
   }),
   methods:{
-    allItem(){
-      let list = getItem()
-      alert(list)
-    }
+    allItemFunction(){
+      getItem()
+      /* eslint-disable no-console */
+      this.items = allItem
+      console.log(this.items)
+    },
+  },
+  mounted: function(){
+    this.items = allItem
+    console.log('mounted')
   }
 };
 </script>

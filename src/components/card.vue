@@ -2,10 +2,10 @@
   <v-container>
       <v-card>
           <h1>{{title}}</h1>
-          <v-btn icon right v-on:click='delItem'>
+          <v-btn icon right v-on:click='supress'>
             <v-icon>mdi-delete</v-icon>
           </v-btn>
-        <div>{{listTome}}</div>
+        <div>Dernier tome: {{tomeMax}}</div>
       </v-card>
   </v-container>
 </template>
@@ -17,16 +17,19 @@ export default {
   name: 'Card',
   props:{
     title: String,
-    listTome: String
+    tomeMax: Number,
+    index: null
   },
   data: () => ({
 
   }),
   methods:{
     supress(){
-      let obj = delItem
-      alert(obj)
-    }
+      /* eslint-disable no-console */
+      let obj = delItem(this.index)
+      console.log(obj)
+      this.$emit('delete')
+    },
   }
 };
 </script>

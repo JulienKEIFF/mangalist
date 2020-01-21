@@ -33,6 +33,7 @@ export default {
     addingItem(){
       if(this.nameInput && this.maxInput && this.descrInput){
         addItem(this.nameInput, this.maxInput, this.descrInput)
+        this.$emit('addComplete')
       }else{
         alert('Insert data in the form')
       }
