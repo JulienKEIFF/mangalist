@@ -13,13 +13,15 @@
       </v-list>
     </v-navigation-drawer> -->
     <v-content>
-      <list/>
+      <list />
     </v-content>
   </v-app>
 </template>
 
 <script>
 import list from './components/list';
+//import {exportDB} from './../public/openDB';
+
 
 export default {
   name: 'App',
@@ -35,7 +37,17 @@ export default {
         { title: 'Home', icon: 'mdi-view-dashboard' },
         { title: 'About', icon: 'mdi-help' },
       ],
+      db: null
     }
+  },
+  mounted: function(){
+    /* eslint-disable no-console */
+    let request = window.indexedDB.open("mangalist", 1)
+    request.onsuccess = function(event){
+      this.db = event.target.result
+      console.log(event)
+    }
+    console.log(this.db)
   }
 };
 </script>

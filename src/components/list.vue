@@ -5,7 +5,7 @@
         <card :title=item.name :tomeMax="item.tomeMax" :index="item.key" v-if="items" v-on:delete="allItemFunction" />
       </div>
     </div>
-    <button v-on:click='allItemFunction'>Click</button>
+    <button v-on:click='allItemFunction' v-if="listOpen">Click</button>
 
    <v-btn fab color="teal" bottom right absolute>
       <v-icon>mdi-plus</v-icon>
@@ -30,18 +30,18 @@ export default {
   data: () => ({
     add: true,
     items: allItem,
+    listOpen: true
   }),
   methods:{
     allItemFunction(){
       getItem()
       /* eslint-disable no-console */
       this.items = allItem
-      console.log(this.items)
+      this.listOpen = false
     },
   },
-  mounted: function(){
-    this.items = allItem
-    console.log('mounted')
+  beforeMount: function(){
+    
   }
 };
 </script>

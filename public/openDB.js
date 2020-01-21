@@ -1,20 +1,10 @@
+let allItem = []
+let db
 let request = window.indexedDB.open("mangalist", 1)
-let db = IDBDatabase
 let objectStore = IDBObjectStore
+const exportDB = db
 
 /* eslint-disable no-console */
-request.onerror = function () {
-    alert('Open database is impossible')
-};
-request.onsuccess = function(event){
-    db = event.target.result
-    getItem()
-}
-request.onupgradeneeded = function (event) {
-    db = event.target.result;
-    objectStore = db.createObjectStore("manga", { keyPath: "key", autoIncrement: true });
-};
-
 function addItem(name, tomeMax, descr){
     let transaction = db.transaction("manga", "readwrite");
     transaction.oncomplete = function(){
@@ -29,11 +19,9 @@ function delItem(key){
     objectStore = transaction.objectStore("manga")
     objectStore.delete(key)
     transaction.onsuccess = function(){
-        console.log('supression terminer')
+      console.log('supression terminer')
     }
 }
-
-let allItem = []
 
 function getItem(){
   allItem = []
@@ -53,7 +41,21 @@ function getItem(){
   }
 }
 
+request.onerror = function () {
+  alert('Open database is impossible')
+};
+request.onsuccess = function (event) {
+  db = event.target.result;
+  getItem();
+}
+request.onupgradeneeded = function (event) {
+  db = event.target.result;
+  objectStore = db.createObjectStore("manga", { keyPath: "key", autoIncrement: true });
+};
+
+
 export {addItem}
 export {delItem}
 export {getItem}
 export {allItem as allItem}
+export {exportDB}
