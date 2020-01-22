@@ -2,9 +2,8 @@
   <v-container>
 
     <div class="root">
-      <v-text-field outlined dense label="Rechercher un livre" v-model="nameInput" clearable />
-      {{nameInput}}
-      <div v-for="item in items" :key=item.key>
+      <v-text-field v-if="listOpen === false" outlined dense label="Rechercher un livre" v-model="search" clearable />
+      <div v-for="item in filteredList" :key=item.key>
         <card :title=item.name :tomeMax="item.tomeMax" :descr="item.descr" :index="item.key" v-if="items" v-on:delete="allItemFunction" />
       </div>
     </div>
@@ -15,7 +14,7 @@
     </div>
     
 
-    <v-btn v-on:click='toggleAdd' fab color="teal" bottom right class="plus">
+    <v-btn v-on:click='toggleAdd' fab color="teal" bottom right class="plus" v-if="listOpen === false">
       <v-icon>mdi-plus</v-icon>
     </v-btn>
 
@@ -41,7 +40,7 @@ export default {
     add: false,
     items: allItem,
     listOpen: true,
-    nameInput: null
+    search: ""
   }),
   methods:{
     allItemFunction(){
@@ -54,10 +53,17 @@ export default {
       this.add = !this.add
     }
   },
+  computed: {
+    filteredList() {
+      return this.items.filter(post => {
+        return post.name.toLowerCase().includes(this.search.toLowerCase())
+      })
+    }
+  },
   beforeMount: function(){
     
   }
-};
+}
 </script>
 
 <style scoped lang="scss">
