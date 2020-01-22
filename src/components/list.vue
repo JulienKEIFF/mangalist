@@ -1,20 +1,26 @@
 <template>
   <v-container>
+
     <div class="root">
+      <v-text-field outlined dense label="Rechercher un livre" v-model="nameInput" clearable />
+      {{nameInput}}
       <div v-for="item in items" :key=item.key>
         <card :title=item.name :tomeMax="item.tomeMax" :descr="item.descr" :index="item.key" v-if="items" v-on:delete="allItemFunction" />
       </div>
     </div>
+
     <div v-if="listOpen">
       <p>Cette application est encore en développement. <br> Si vous constatez des bug veuillez m'en faire part</p> 
       <v-btn id="hide" color="teal" v-on:click='allItemFunction'>Je comprends</v-btn>
     </div>
     
 
-   <v-btn v-on:click='toggleAdd' fab color="teal" bottom right class="plus">
+    <v-btn v-on:click='toggleAdd' fab color="teal" bottom right class="plus">
       <v-icon>mdi-plus</v-icon>
     </v-btn>
-   <addView v-if="add" v-on:viewToggle="toggleAdd" v-on:addComplete="allItemFunction" absolute />
+
+    <addView v-if="add" v-on:viewToggle="toggleAdd" v-on:addComplete="allItemFunction" absolute />
+
   </v-container>
 </template>
 
@@ -34,12 +40,13 @@ export default {
   data: () => ({
     add: false,
     items: allItem,
-    listOpen: true
+    listOpen: true,
+    nameInput: null
   }),
   methods:{
     allItemFunction(){
-      getItem()
       /* eslint-disable no-console */
+      getItem()
       this.items = allItem
       this.listOpen = false
     },
