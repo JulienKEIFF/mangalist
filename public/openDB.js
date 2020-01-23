@@ -47,13 +47,16 @@ function getItem(){
   }
 }
 
-function updateItem(key){
-  var objectStore = db.transaction("manga", "readwrite").objectStore("manga");
-  var request = objectStore.get(key);
+function updateItem(key, name, tomeMax, descr){
+  let objectStore = db.transaction("manga", "readwrite").objectStore("manga");
+  let request = objectStore.get(key);
   request.onsuccess = function () {
-    var data = request.result;
-    data.age = 42;
-    var requestUpdate = objectStore.put(data);
+    let object = request.result;
+    object.name = name;
+    object.tomeMax = tomeMax
+    object.descr = descr
+    let requestUpdate = objectStore.put(object);
+    console.log(object)
   };
 }
 

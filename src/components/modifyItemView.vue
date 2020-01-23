@@ -1,17 +1,17 @@
 <template>
   <div id="container">
     <v-container>
-      <v-overlay v-on:click="viewToggle">
+      <v-overlay v-if="ready">
         <v-card light elevation="6">
           <h1>Modifier le livre</h1>
           <v-col cols="12" sm="12">
-            <v-text-field dense label="Titre" v-model="nameInput" clearable />
+            <v-text-field dense label="Titre" v-model="itemFind.name" clearable />
           </v-col>
           <v-col cols="12" sm="12">
-            <v-text-field dense label="Dernier tome" v-model.number="maxInput" clearable />
+            <v-text-field dense label="Dernier tome" v-model.number="itemFind.tomeMax" clearable></v-text-field>
           </v-col>
           <v-col cols="12" sm="12">
-            <v-textarea dense label="Résumer de la série" v-model="descrInput" clearable auto-grow rows="1" />
+            <v-textarea dense label="Résumer de la série" v-model="itemFind.descr" clearable auto-grow rows="1">{{itemFind.descr}}</v-textarea>
           </v-col>
           <v-btn v-on:click='addingItem'>Modifier le livre</v-btn>
           <v-btn v-on:click='viewToggle'>Annuler la saisie</v-btn>
@@ -23,22 +23,27 @@
 
 <script>
 import {updateItem} from './../../public/openDB'
+import {allItem} from './../../public/openDB'
 
 export default {
   name: 'modifyView',
-  components:{
-
+  props:{
+    itemKey: null
   },
   data: () => ({
-   nameInput: null,
-   maxInput: null,
-   descrInput: null,
+   itemFind: {
+     name: null,
+     tomeMax: null,
+     descr: null,
+     key: null
+   },
+   ready: false,
   }),
   methods:{
     addingItem(){
-      if(this.nameInput && this.maxInput && this.descrInput){
-        updateItem(this.nameInput, this.maxInput, this.descrInput)
-        this.$emit('addComplete')
+      if(this.itemFind.name && this.itemFind.tomeMax && this.itemFind.descr){
+        updateItem(this.itemFind.key, this.itemFind.name, this.itemFind.tomeMax, this.itemFind.descr)
+        this.$emit('updateComplete')
         this.viewToggle()
       }else{
         alert('Insert data in the form')
@@ -46,6 +51,18 @@ export default {
     },
     viewToggle(){
       this.$emit('modifyToggle')
+    }
+  },
+  created: function(){
+    /* eslint-disable no-console */
+    for (let i = 0; i < allItem.length; i++) {
+      if(allItem[i].key === this.itemKey){
+        this.itemFind.name = allItem[i].name
+        this.itemFind.tomeMax = allItem[i].tomeMax
+        this.itemFind.descr = allItem[i].descr
+        this.itemFind.key = allItem[i].key
+        this.ready = true
+      }      
     }
   }
 };

@@ -44,7 +44,7 @@ export default {
       this.$emit('delete')
     },
     modify(){
-      this.$emit('modifyToggle')
+      this.$emit('modifyToggle', this.index)
     }
   }
 };

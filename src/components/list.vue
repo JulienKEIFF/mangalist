@@ -19,7 +19,7 @@
     </v-btn>
 
     <addView v-if="add" v-on:viewToggle="toggleAdd" v-on:addComplete="allItemFunction" absolute />
-    <modifyView v-if="modify" v-on:modifyToggle="toggleModify" absolute />
+    <modifyView v-if="modify" v-on:modifyToggle="toggleModify" v-on:updateComplete="allItemFunction" :itemKey="itemKeyToPass" absolute />
 
   </v-container>
 </template>
@@ -44,7 +44,8 @@ export default {
     modify: false,
     items: allItem,
     listOpen: true,
-    search: ""
+    search: "",
+    itemKeyToPass: null
   }),
   methods:{
     allItemFunction(){
@@ -56,7 +57,8 @@ export default {
     toggleAdd(){
       this.add = !this.add
     },
-    toggleModify(){
+    toggleModify(key){
+      this.itemKeyToPass = key
       this.modify = !this.modify
     }
   },
