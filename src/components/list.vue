@@ -4,7 +4,7 @@
     <div class="root">
       <v-text-field v-if="listOpen === false" outlined dense label="Rechercher un livre" v-model="search" clearable />
       <div v-for="item in filteredList" :key=item.key>
-        <card :title=item.name :tomeMax="item.tomeMax" :descr="item.descr" :index="item.key" v-if="items" v-on:delete="allItemFunction" />
+        <card :title=item.name :tomeMax="item.tomeMax" :descr="item.descr" :index="item.key" v-if="items" v-on:delete="allItemFunction" v-on:modifyToggle="toggleModify" />
       </div>
     </div>
 
@@ -19,6 +19,7 @@
     </v-btn>
 
     <addView v-if="add" v-on:viewToggle="toggleAdd" v-on:addComplete="allItemFunction" absolute />
+    <modifyView v-if="modify" v-on:modifyToggle="toggleModify" absolute />
 
   </v-container>
 </template>
@@ -26,6 +27,7 @@
 <script>
 import card from './card.vue'
 import addView from './addItemView.vue'
+import modifyView from './modifyItemView.vue'
 
 import {getItem} from './../../public/openDB'
 import {allItem} from './../../public/openDB'
@@ -34,10 +36,12 @@ export default {
   name: 'List',
   components:{
     card,
-    addView
+    addView,
+    modifyView
   },
   data: () => ({
     add: false,
+    modify: false,
     items: allItem,
     listOpen: true,
     search: ""
@@ -51,6 +55,9 @@ export default {
     },
     toggleAdd(){
       this.add = !this.add
+    },
+    toggleModify(){
+      this.modify = !this.modify
     }
   },
   computed: {

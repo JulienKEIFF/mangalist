@@ -5,6 +5,7 @@ let objectStore = IDBObjectStore
 const exportDB = db
 
 /* eslint-disable no-console */
+/* eslint-disable no-unused-vars */
 function addItem(name, tomeMax, descr){
     let transaction = db.transaction("manga", "readwrite");
     transaction.oncomplete = function(){
@@ -46,6 +47,18 @@ function getItem(){
   }
 }
 
+function updateItem(key){
+  var objectStore = db.transaction("manga", "readwrite").objectStore("manga");
+  var request = objectStore.get(key);
+  request.onsuccess = function () {
+    var data = request.result;
+    data.age = 42;
+    var requestUpdate = objectStore.put(data);
+  };
+}
+
+
+// Open db //
 request.onerror = function () {
   alert('Open database is impossible')
 };
@@ -62,5 +75,6 @@ request.onupgradeneeded = function (event) {
 export {addItem}
 export {delItem}
 export {getItem}
+export {updateItem}
 export {allItem as allItem}
 export {exportDB}

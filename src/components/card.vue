@@ -3,9 +3,17 @@
       <v-card>
         <v-col>
           <h1>{{title}}</h1>
-          <v-btn icon right v-on:click='supress'>
-            <v-icon>mdi-delete</v-icon>
-          </v-btn>
+          <v-menu offset-y>
+            <template v-slot:activator="{ on }">
+              <v-btn icon v-on="on">
+                <v-icon>mdi-dots-vertical</v-icon>
+              </v-btn>
+            </template>
+            <v-list>
+              <v-list-item v-on:click='modify'>Modifier</v-list-item>
+              <v-list-item v-on:click='supress'>Suprimer</v-list-item>
+            </v-list>
+          </v-menu>
           <div class="last-tome">Dernier tome: {{tomeMax}}</div>
           <v-divider></v-divider>
           <div class="description">{{descr}}</div>
@@ -16,7 +24,7 @@
 
 <script>
 import {delItem} from './../../public/openDB'
-
+ 
 export default {
   name: 'Card',
   props:{
@@ -35,6 +43,9 @@ export default {
       console.log(obj)
       this.$emit('delete')
     },
+    modify(){
+      this.$emit('modifyToggle')
+    }
   }
 };
 </script>
