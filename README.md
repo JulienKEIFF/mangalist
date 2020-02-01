@@ -1,5 +1,10 @@
 # mangalist
 
+##Download APK
+```
+release tab
+```
+
 ## Project setup
 ```
 npm install
