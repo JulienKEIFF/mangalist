@@ -2,24 +2,20 @@
   <v-container>
 
     <div class="root">
-      <v-text-field v-if="listOpen === false" outlined dense label="Rechercher un livre" v-model="search" clearable />
+      <v-text-field outlined dense label="Rechercher un livre" v-model="search" clearable />
       <div v-for="item in filteredList" :key=item.key>
-        <card :title=item.name :tomeMax="item.tomeMax" :descr="item.descr" :index="item.key" v-if="items" v-on:delete="allItemFunction" v-on:modifyToggle="toggleModify" />
+        <card :title=item.name :tomeMax="item.tomeMax" :descr="item.descr" :index="item.key" v-if="items" v-on:delete="supress" v-on:modifyToggle="toggleModify" />
       </div>
     </div>
 
-    <div v-if="listOpen">
-      <p>Cette application est encore en développement. <br> Si vous constatez des bug veuillez m'en faire part</p> 
-      <v-btn id="hide" color="teal" v-on:click='allItemFunction'>Je comprends</v-btn>
-    </div>
     
 
-    <v-btn v-on:click='toggleAdd' fab color="teal" bottom right class="plus" v-if="listOpen === false">
+    <v-btn v-on:click='toggleAdd' fab color="teal" bottom right class="plus">
       <v-icon>mdi-plus</v-icon>
     </v-btn>
 
-    <addView v-if="add" v-on:viewToggle="toggleAdd" v-on:addComplete="allItemFunction" absolute />
-    <modifyView v-if="modify" v-on:modifyToggle="toggleModify" v-on:updateComplete="allItemFunction" :itemKey="itemKeyToPass" absolute />
+    <addView v-if="add" v-on:viewToggle="toggleAdd" v-on:addComplete="getDB" absolute />
+    <modifyView v-if="modify" v-on:modifyToggle="toggleModify" v-on:updateComplete="getDB" :itemKey="itemKeyToPass" absolute />
 
   </v-container>
 </template>
@@ -28,9 +24,6 @@
 import card from './card.vue'
 import addView from './addItemView.vue'
 import modifyView from './modifyItemView.vue'
-
-import {getItem} from './../../public/openDB'
-import {allItem} from './../../public/openDB'
 
 export default {
   name: 'List',
@@ -42,24 +35,65 @@ export default {
   data: () => ({
     add: false,
     modify: false,
-    items: allItem,
-    listOpen: true,
+    items: [],
     search: "",
-    itemKeyToPass: null
+    itemKeyToPass: null,
+    db: null
   }),
   methods:{
-    allItemFunction(){
-      /* eslint-disable no-console */
-      getItem()
-      this.items = allItem
-      this.listOpen = false
+    async getDB(){
+      return new Promise((resolve, reject) => {
+        let request = window.indexedDB.open("mangalist", 1)
+        request.onerror = e =>{
+          alert('Error opening database ' + e)
+          reject('error')
+        }
+        request.onsuccess = e =>{
+          resolve(e.target.result)
+        }
+        request.onupgradeneeded = e =>{
+          let db = e.target.result
+          /* eslint-disable no-unused-vars */
+          let objectStore = db.createObjectStore("mangalist", { keyPath: "key", autoIncrement: true })
+        }
+      })
     },
-    toggleAdd(){
+    async getItems(){
+      return new Promise((resolve, reject) =>{
+        
+        let trans = this.db.transaction('manga','readonly');
+        trans.oncomplete = () => {
+          resolve(manga);
+        };
+        let manga = []
+        let store = trans.objectStore('manga')
+
+        store.openCursor().onsuccess = e =>{
+          let cursor = e.target.result
+          if(cursor){
+            manga.push(cursor.value)
+            manga.sort(function(a,b){
+              let x = a.name.toLowerCase();
+              let y = b.name.toLowerCase();
+              return x < y ? -1 : x > y ? 1 : 0;
+            });
+            cursor.continue()
+          }
+        }
+      })
+    },
+
+    async toggleAdd(){
       this.add = !this.add
+      this.items = await this.getItems()
     },
-    toggleModify(key){
+    async toggleModify(key){
       this.itemKeyToPass = key
       this.modify = !this.modify
+      this.items = await this.getItems()
+    },
+    async supress(){
+      this.items = await this.getItems()
     }
   },
   computed: {
@@ -69,8 +103,9 @@ export default {
       })
     }
   },
-  beforeMount: function(){
-    
+  created: async function(){
+    this.db = await this.getDB()
+    this.items = await this.getItems()
   }
 }
 </script>
