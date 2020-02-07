@@ -17,6 +17,10 @@
     <addView v-if="add" v-on:viewToggle="toggleAdd" v-on:addComplete="getDB" absolute />
     <modifyView v-if="modify" v-on:modifyToggle="toggleModify" v-on:updateComplete="getDB" :itemKey="itemKeyToPass" absolute />
 
+    <v-snackbar v-model="snackbar" :timeout="2500">
+      {{snakText}}
+    </v-snackbar>
+
   </v-container>
 </template>
 
@@ -38,7 +42,9 @@ export default {
     items: [],
     search: "",
     itemKeyToPass: null,
-    db: null
+    db: null,
+    snackbar: false,
+    snakText: null,
   }),
   methods:{
     async getDB(){
@@ -94,6 +100,8 @@ export default {
     },
     async supress(){
       this.items = await this.getItems()
+      this.snakText = 'Livre supprimé'
+      this.snackbar = true
     }
   },
   computed: {
