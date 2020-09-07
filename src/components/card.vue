@@ -29,7 +29,7 @@ export default {
   name: 'Card',
   props:{
     title: String,
-    tomeMax: Number,
+    tomeMax: String,
     descr: String,
     index: null
   },
@@ -40,8 +40,8 @@ export default {
     supress(){
       /* eslint-disable no-console */
       let obj = delItem(this.index)
-      console.log(obj)
       this.$emit('delete')
+      obj
     },
     modify(){
       this.$emit('modifyToggle', this.index)

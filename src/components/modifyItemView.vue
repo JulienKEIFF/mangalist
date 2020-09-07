@@ -8,7 +8,7 @@
             <v-text-field dense label="Titre" v-model="itemFind.name" clearable />
           </v-col>
           <v-col cols="12" sm="12">
-            <v-text-field dense label="Dernier tome" v-model.number="itemFind.tomeMax" clearable></v-text-field>
+            <v-text-field dense label="Dernier tome" v-model="itemFind.tomeMax" clearable></v-text-field>
           </v-col>
           <v-col cols="12" sm="12">
             <v-textarea dense label="Résumer de la série" v-model="itemFind.descr" clearable auto-grow rows="1">{{itemFind.descr}}</v-textarea>

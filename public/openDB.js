@@ -9,7 +9,7 @@ const exportDB = db
 function addItem(name, tomeMax, descr){
     let transaction = db.transaction("manga", "readwrite");
     transaction.oncomplete = function(){
-        console.log('purfect')
+
     }
     objectStore = transaction.objectStore("manga")
     objectStore.add({ name: name, tomeMax: tomeMax, descr: descr })
@@ -20,7 +20,6 @@ function delItem(key){
     objectStore = transaction.objectStore("manga")
     objectStore.delete(key)
     transaction.onsuccess = function(){
-      console.log('supression terminer')
     }
 }
 
@@ -56,7 +55,6 @@ function updateItem(key, name, tomeMax, descr){
     object.tomeMax = tomeMax
     object.descr = descr
     let requestUpdate = objectStore.put(object);
-    console.log(object)
   };
 }
 
